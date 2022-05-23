@@ -1,0 +1,356 @@
+# nThread 1 nGpus 1 minBytes 1024 maxBytes 2147483648 step: 2(factor) warmup iters: 1 iters: 2 validation: 1 
+#
+# Using devices
+#   Rank  0 Pid   9958 on GCRHYP3C210 device  0 [0xe7] Tesla V100-SXM3-32GB
+#   Rank  1 Pid   9959 on GCRHYP3C210 device  1 [0xe5] Tesla V100-SXM3-32GB
+#   Rank  2 Pid   9960 on GCRHYP3C210 device  2 [0xe2] Tesla V100-SXM3-32GB
+#   Rank  3 Pid   9961 on GCRHYP3C210 device  3 [0xe0] Tesla V100-SXM3-32GB
+#   Rank  4 Pid   9962 on GCRHYP3C210 device  4 [0xbe] Tesla V100-SXM3-32GB
+#   Rank  5 Pid   9963 on GCRHYP3C210 device  5 [0xbc] Tesla V100-SXM3-32GB
+#   Rank  6 Pid   9966 on GCRHYP3C210 device  6 [0xb9] Tesla V100-SXM3-32GB
+#   Rank  7 Pid   9968 on GCRHYP3C210 device  7 [0xb7] Tesla V100-SXM3-32GB
+#   Rank  8 Pid   9972 on GCRHYP3C210 device  8 [0x5e] Tesla V100-SXM3-32GB
+#   Rank  9 Pid   9975 on GCRHYP3C210 device  9 [0x5c] Tesla V100-SXM3-32GB
+#   Rank 10 Pid   9978 on GCRHYP3C210 device 10 [0x59] Tesla V100-SXM3-32GB
+#   Rank 11 Pid   9982 on GCRHYP3C210 device 11 [0x57] Tesla V100-SXM3-32GB
+#   Rank 12 Pid   9984 on GCRHYP3C210 device 12 [0x3b] Tesla V100-SXM3-32GB
+#   Rank 13 Pid   9988 on GCRHYP3C210 device 13 [0x39] Tesla V100-SXM3-32GB
+#   Rank 14 Pid   9991 on GCRHYP3C210 device 14 [0x36] Tesla V100-SXM3-32GB
+#   Rank 15 Pid   9994 on GCRHYP3C210 device 15 [0x34] Tesla V100-SXM3-32GB
+#   Rank 16 Pid   6839 on GCRHYP3C214 device  0 [0xe7] Tesla V100-SXM3-32GB
+GCRHYP3C210:9958:9958 [0] NCCL INFO Bootstrap : Using ib0:192.168.0.80<0>
+GCRHYP3C210:9958:9958 [0] NCCL INFO NET/Plugin : No plugin found (libnccl-net.so), using internal implementation
+GCRHYP3C210:9958:9958 [0] NCCL INFO NET/IB : Using [0]mlx5_0:1/IB [1]mlx5_1:1/IB [2]mlx5_2:1/IB [3]mlx5_3:1/IB [4]mlx5_5:1/RoCE [5]mlx5_6:1/IB [6]mlx5_7:1/IB [7]mlx5_8:1/IB [8]mlx5_9:1/IB ; OOB ib0:192.168.0.80<0>
+GCRHYP3C210:9958:9958 [0] NCCL INFO Using network IB
+GCRHYP3C214:6839:6839 [0] NCCL INFO Bootstrap : Using ib0:192.168.0.84<0>
+GCRHYP3C214:6839:6839 [0] NCCL INFO NET/Plugin : No plugin found (libnccl-net.so), using internal implementation
+GCRHYP3C214:6839:6839 [0] NCCL INFO NET/IB : Using [0]mlx5_0:1/IB [1]mlx5_1:1/IB [2]mlx5_2:1/IB [3]mlx5_3:1/IB [4]mlx5_5:1/RoCE [5]mlx5_6:1/IB [6]mlx5_7:1/IB [7]mlx5_8:1/IB [8]mlx5_9:1/IB ; OOB ib0:192.168.0.84<0>
+GCRHYP3C214:6839:6839 [0] NCCL INFO Using network IB
+NCCL version 2.8.4+cuda11.1
+GCRHYP3C210:9988:9988 [13] NCCL INFO Bootstrap : Using ib0:192.168.0.80<0>
+GCRHYP3C210:9988:9988 [13] NCCL INFO NET/Plugin : No plugin found (libnccl-net.so), using internal implementation
+GCRHYP3C210:9984:9984 [12] NCCL INFO Bootstrap : Using ib0:192.168.0.80<0>
+GCRHYP3C210:9984:9984 [12] NCCL INFO NET/Plugin : No plugin found (libnccl-net.so), using internal implementation
+GCRHYP3C210:9988:9988 [13] NCCL INFO NET/IB : Using [0]mlx5_0:1/IB [1]mlx5_1:1/IB [2]mlx5_2:1/IB [3]mlx5_3:1/IB [4]mlx5_5:1/RoCE [5]mlx5_6:1/IB [6]mlx5_7:1/IB [7]mlx5_8:1/IB [8]mlx5_9:1/IB ; OOB ib0:192.168.0.80<0>
+GCRHYP3C210:9988:9988 [13] NCCL INFO Using network IB
+GCRHYP3C210:9966:9966 [6] NCCL INFO Bootstrap : Using ib0:192.168.0.80<0>
+GCRHYP3C210:9966:9966 [6] NCCL INFO NET/Plugin : No plugin found (libnccl-net.so), using internal implementation
+GCRHYP3C210:9975:9975 [9] NCCL INFO Bootstrap : Using ib0:192.168.0.80<0>
+GCRHYP3C210:9975:9975 [9] NCCL INFO NET/Plugin : No plugin found (libnccl-net.so), using internal implementation
+GCRHYP3C210:9959:9959 [1] NCCL INFO Bootstrap : Using ib0:192.168.0.80<0>
+GCRHYP3C210:9959:9959 [1] NCCL INFO NET/Plugin : No plugin found (libnccl-net.so), using internal implementation
+GCRHYP3C210:9972:9972 [8] NCCL INFO Bootstrap : Using ib0:192.168.0.80<0>
+GCRHYP3C210:9972:9972 [8] NCCL INFO NET/Plugin : No plugin found (libnccl-net.so), using internal implementation
+GCRHYP3C210:9982:9982 [11] NCCL INFO Bootstrap : Using ib0:192.168.0.80<0>
+GCRHYP3C210:9982:9982 [11] NCCL INFO NET/Plugin : No plugin found (libnccl-net.so), using internal implementation
+GCRHYP3C210:9962:9962 [4] NCCL INFO Bootstrap : Using ib0:192.168.0.80<0>
+GCRHYP3C210:9962:9962 [4] NCCL INFO NET/Plugin : No plugin found (libnccl-net.so), using internal implementation
+GCRHYP3C210:9961:9961 [3] NCCL INFO Bootstrap : Using ib0:192.168.0.80<0>
+GCRHYP3C210:9961:9961 [3] NCCL INFO NET/Plugin : No plugin found (libnccl-net.so), using internal implementation
+GCRHYP3C210:9968:9968 [7] NCCL INFO Bootstrap : Using ib0:192.168.0.80<0>
+GCRHYP3C210:9968:9968 [7] NCCL INFO NET/Plugin : No plugin found (libnccl-net.so), using internal implementation
+GCRHYP3C210:9978:9978 [10] NCCL INFO Bootstrap : Using ib0:192.168.0.80<0>
+GCRHYP3C210:9978:9978 [10] NCCL INFO NET/Plugin : No plugin found (libnccl-net.so), using internal implementation
+GCRHYP3C210:9994:9994 [15] NCCL INFO Bootstrap : Using ib0:192.168.0.80<0>
+GCRHYP3C210:9994:9994 [15] NCCL INFO NET/Plugin : No plugin found (libnccl-net.so), using internal implementation
+GCRHYP3C210:9991:9991 [14] NCCL INFO Bootstrap : Using ib0:192.168.0.80<0>
+GCRHYP3C210:9991:9991 [14] NCCL INFO NET/Plugin : No plugin found (libnccl-net.so), using internal implementation
+GCRHYP3C210:9963:9963 [5] NCCL INFO Bootstrap : Using ib0:192.168.0.80<0>
+GCRHYP3C210:9960:9960 [2] NCCL INFO Bootstrap : Using ib0:192.168.0.80<0>
+GCRHYP3C210:9963:9963 [5] NCCL INFO NET/Plugin : No plugin found (libnccl-net.so), using internal implementation
+GCRHYP3C210:9960:9960 [2] NCCL INFO NET/Plugin : No plugin found (libnccl-net.so), using internal implementation
+GCRHYP3C210:9984:9984 [12] NCCL INFO NET/IB : Using [0]mlx5_0:1/IB [1]mlx5_1:1/IB [2]mlx5_2:1/IB [3]mlx5_3:1/IB [4]mlx5_5:1/RoCE [5]mlx5_6:1/IB [6]mlx5_7:1/IB [7]mlx5_8:1/IB [8]mlx5_9:1/IB ; OOB ib0:192.168.0.80<0>
+GCRHYP3C210:9984:9984 [12] NCCL INFO Using network IB
+GCRHYP3C210:9966:9966 [6] NCCL INFO NET/IB : Using [0]mlx5_0:1/IB [1]mlx5_1:1/IB [2]mlx5_2:1/IB [3]mlx5_3:1/IB [4]mlx5_5:1/RoCE [5]mlx5_6:1/IB [6]mlx5_7:1/IB [7]mlx5_8:1/IB [8]mlx5_9:1/IB ; OOB ib0:192.168.0.80<0>
+GCRHYP3C210:9966:9966 [6] NCCL INFO Using network IB
+GCRHYP3C210:9975:9975 [9] NCCL INFO NET/IB : Using [0]mlx5_0:1/IB [1]mlx5_1:1/IB [2]mlx5_2:1/IB [3]mlx5_3:1/IB [4]mlx5_5:1/RoCE [5]mlx5_6:1/IB [6]mlx5_7:1/IB [7]mlx5_8:1/IB [8]mlx5_9:1/IB ; OOB ib0:192.168.0.80<0>
+GCRHYP3C210:9975:9975 [9] NCCL INFO Using network IB
+GCRHYP3C210:9972:9972 [8] NCCL INFO NET/IB : Using [0]mlx5_0:1/IB [1]mlx5_1:1/IB [2]mlx5_2:1/IB [3]mlx5_3:1/IB [4]mlx5_5:1/RoCE [5]mlx5_6:1/IB [6]mlx5_7:1/IB [7]mlx5_8:1/IB [8]mlx5_9:1/IB ; OOB ib0:192.168.0.80<0>
+GCRHYP3C210:9972:9972 [8] NCCL INFO Using network IB
+GCRHYP3C210:9959:9959 [1] NCCL INFO NET/IB : Using [0]mlx5_0:1/IB [1]mlx5_1:1/IB [2]mlx5_2:1/IB [3]mlx5_3:1/IB [4]mlx5_5:1/RoCE [5]mlx5_6:1/IB [6]mlx5_7:1/IB [7]mlx5_8:1/IB [8]mlx5_9:1/IB ; OOB ib0:192.168.0.80<0>
+GCRHYP3C210:9959:9959 [1] NCCL INFO Using network IB
+GCRHYP3C210:9961:9961 [3] NCCL INFO NET/IB : Using [0]mlx5_0:1/IB [1]mlx5_1:1/IB [2]mlx5_2:1/IB [3]mlx5_3:1/IB [4]mlx5_5:1/RoCE [5]mlx5_6:1/IB [6]mlx5_7:1/IB [7]mlx5_8:1/IB [8]mlx5_9:1/IB ; OOB ib0:192.168.0.80<0>
+GCRHYP3C210:9961:9961 [3] NCCL INFO Using network IB
+GCRHYP3C210:9962:9962 [4] NCCL INFO NET/IB : Using [0]mlx5_0:1/IB [1]mlx5_1:1/IB [2]mlx5_2:1/IB [3]mlx5_3:1/IB [4]mlx5_5:1/RoCE [5]mlx5_6:1/IB [6]mlx5_7:1/IB [7]mlx5_8:1/IB [8]mlx5_9:1/IB ; OOB ib0:192.168.0.80<0>
+GCRHYP3C210:9962:9962 [4] NCCL INFO Using network IB
+GCRHYP3C210:9994:9994 [15] NCCL INFO NET/IB : Using [0]mlx5_0:1/IB [1]mlx5_1:1/IB [2]mlx5_2:1/IB [3]mlx5_3:1/IB [4]mlx5_5:1/RoCE [5]mlx5_6:1/IB [6]mlx5_7:1/IB [7]mlx5_8:1/IB [8]mlx5_9:1/IB ; OOB ib0:192.168.0.80<0>
+GCRHYP3C210:9994:9994 [15] NCCL INFO Using network IB
+GCRHYP3C210:9982:9982 [11] NCCL INFO NET/IB : Using [0]mlx5_0:1/IB [1]mlx5_1:1/IB [2]mlx5_2:1/IB [3]mlx5_3:1/IB [4]mlx5_5:1/RoCE [5]mlx5_6:1/IB [6]mlx5_7:1/IB [7]mlx5_8:1/IB [8]mlx5_9:1/IB ; OOB ib0:192.168.0.80<0>
+GCRHYP3C210:9982:9982 [11] NCCL INFO Using network IB
+GCRHYP3C210:9978:9978 [10] NCCL INFO NET/IB : Using [0]mlx5_0:1/IB [1]mlx5_1:1/IB [2]mlx5_2:1/IB [3]mlx5_3:1/IB [4]mlx5_5:1/RoCE [5]mlx5_6:1/IB [6]mlx5_7:1/IB [7]mlx5_8:1/IB [8]mlx5_9:1/IB ; OOB ib0:192.168.0.80<0>
+GCRHYP3C210:9978:9978 [10] NCCL INFO Using network IB
+GCRHYP3C210:9968:9968 [7] NCCL INFO NET/IB : Using [0]mlx5_0:1/IB [1]mlx5_1:1/IB [2]mlx5_2:1/IB [3]mlx5_3:1/IB [4]mlx5_5:1/RoCE [5]mlx5_6:1/IB [6]mlx5_7:1/IB [7]mlx5_8:1/IB [8]mlx5_9:1/IB ; OOB ib0:192.168.0.80<0>
+GCRHYP3C210:9968:9968 [7] NCCL INFO Using network IB
+GCRHYP3C210:9960:9960 [2] NCCL INFO NET/IB : Using [0]mlx5_0:1/IB [1]mlx5_1:1/IB [2]mlx5_2:1/IB [3]mlx5_3:1/IB [4]mlx5_5:1/RoCE [5]mlx5_6:1/IB [6]mlx5_7:1/IB [7]mlx5_8:1/IB [8]mlx5_9:1/IB ; OOB ib0:192.168.0.80<0>
+GCRHYP3C210:9960:9960 [2] NCCL INFO Using network IB
+GCRHYP3C210:9963:9963 [5] NCCL INFO NET/IB : Using [0]mlx5_0:1/IB [1]mlx5_1:1/IB [2]mlx5_2:1/IB [3]mlx5_3:1/IB [4]mlx5_5:1/RoCE [5]mlx5_6:1/IB [6]mlx5_7:1/IB [7]mlx5_8:1/IB [8]mlx5_9:1/IB ; OOB ib0:192.168.0.80<0>
+GCRHYP3C210:9963:9963 [5] NCCL INFO Using network IB
+GCRHYP3C210:9991:9991 [14] NCCL INFO NET/IB : Using [0]mlx5_0:1/IB [1]mlx5_1:1/IB [2]mlx5_2:1/IB [3]mlx5_3:1/IB [4]mlx5_5:1/RoCE [5]mlx5_6:1/IB [6]mlx5_7:1/IB [7]mlx5_8:1/IB [8]mlx5_9:1/IB ; OOB ib0:192.168.0.80<0>
+GCRHYP3C210:9991:9991 [14] NCCL INFO Using network IB
+GCRHYP3C214:6839:6866 [0] NCCL INFO SCCL: Parsing algorithm /home/lifli/test.xml
+GCRHYP3C210:9975:10217 [9] NCCL INFO SCCL: Parsing algorithm /home/lifli/test.xml
+GCRHYP3C210:9982:10221 [11] NCCL INFO SCCL: Parsing algorithm /home/lifli/test.xml
+GCRHYP3C210:9988:10213 [13] NCCL INFO SCCL: Parsing algorithm /home/lifli/test.xml
+GCRHYP3C210:9963:10226 [5] NCCL INFO SCCL: Parsing algorithm /home/lifli/test.xml
+GCRHYP3C210:9968:10222 [7] NCCL INFO SCCL: Parsing algorithm /home/lifli/test.xml
+GCRHYP3C210:9994:10227 [15] NCCL INFO SCCL: Parsing algorithm /home/lifli/test.xml
+GCRHYP3C210:9961:10223 [3] NCCL INFO SCCL: Parsing algorithm /home/lifli/test.xml
+GCRHYP3C210:9959:10218 [1] NCCL INFO SCCL: Parsing algorithm /home/lifli/test.xml
+GCRHYP3C210:9978:10220 [10] NCCL INFO SCCL: Parsing algorithm /home/lifli/test.xml
+GCRHYP3C210:9966:10215 [6] NCCL INFO SCCL: Parsing algorithm /home/lifli/test.xml
+GCRHYP3C210:9984:10214 [12] NCCL INFO SCCL: Parsing algorithm /home/lifli/test.xml
+GCRHYP3C210:9962:10219 [4] NCCL INFO SCCL: Parsing algorithm /home/lifli/test.xml
+GCRHYP3C210:9972:10216 [8] NCCL INFO SCCL: Parsing algorithm /home/lifli/test.xml
+GCRHYP3C210:9991:10225 [14] NCCL INFO SCCL: Parsing algorithm /home/lifli/test.xml
+GCRHYP3C210:9960:10224 [2] NCCL INFO SCCL: Parsing algorithm /home/lifli/test.xml
+GCRHYP3C210:9958:10077 [0] NCCL INFO SCCL: Parsing algorithm /home/lifli/test.xml
+GCRHYP3C214:6839:6866 [0] NCCL INFO Parsed SCCL Algorithm /home/lifli/test.xml successfully.
+GCRHYP3C214:6839:6866 [0] NCCL INFO Trees [0] -1/-1/-1->16->0 [1] 0/-1/-1->16->-1
+GCRHYP3C210:9963:10226 [5] NCCL INFO Parsed SCCL Algorithm /home/lifli/test.xml successfully.
+GCRHYP3C210:9963:10226 [5] NCCL INFO Trees [0] 6/-1/-1->5->4 [1] 6/-1/-1->5->4
+GCRHYP3C210:9963:10226 [5] NCCL INFO Setting affinity for GPU 10 to ffffff00,0000ffff,ff000000
+GCRHYP3C210:9962:10219 [4] NCCL INFO Parsed SCCL Algorithm /home/lifli/test.xml successfully.
+GCRHYP3C210:9962:10219 [4] NCCL INFO Trees [0] 5/-1/-1->4->3 [1] 5/-1/-1->4->3
+GCRHYP3C210:9988:10213 [13] NCCL INFO Parsed SCCL Algorithm /home/lifli/test.xml successfully.
+GCRHYP3C210:9988:10213 [13] NCCL INFO Trees [0] 14/-1/-1->13->12 [1] 14/-1/-1->13->12
+GCRHYP3C210:9982:10221 [11] NCCL INFO Parsed SCCL Algorithm /home/lifli/test.xml successfully.
+GCRHYP3C210:9982:10221 [11] NCCL INFO Trees [0] 12/-1/-1->11->10 [1] 12/-1/-1->11->10
+GCRHYP3C210:9975:10217 [9] NCCL INFO Parsed SCCL Algorithm /home/lifli/test.xml successfully.
+GCRHYP3C210:9975:10217 [9] NCCL INFO Trees [0] 10/-1/-1->9->8 [1] 10/-1/-1->9->8
+GCRHYP3C210:9984:10214 [12] NCCL INFO Parsed SCCL Algorithm /home/lifli/test.xml successfully.
+GCRHYP3C210:9984:10214 [12] NCCL INFO Trees [0] 13/-1/-1->12->11 [1] 13/-1/-1->12->11
+GCRHYP3C210:9984:10214 [12] NCCL INFO Setting affinity for GPU 3 to ff,ffff0000,00ffffff
+GCRHYP3C210:9968:10222 [7] NCCL INFO Parsed SCCL Algorithm /home/lifli/test.xml successfully.
+GCRHYP3C210:9968:10222 [7] NCCL INFO Trees [0] 8/-1/-1->7->6 [1] 8/-1/-1->7->6
+GCRHYP3C210:9968:10222 [7] NCCL INFO Setting affinity for GPU 8 to ffffff00,0000ffff,ff000000
+GCRHYP3C210:9972:10216 [8] NCCL INFO Parsed SCCL Algorithm /home/lifli/test.xml successfully.
+GCRHYP3C210:9972:10216 [8] NCCL INFO Trees [0] 9/-1/-1->8->7 [1] 9/-1/-1->8->7
+GCRHYP3C210:9972:10216 [8] NCCL INFO Setting affinity for GPU 7 to ff,ffff0000,00ffffff
+GCRHYP3C210:9991:10225 [14] NCCL INFO Parsed SCCL Algorithm /home/lifli/test.xml successfully.
+GCRHYP3C210:9991:10225 [14] NCCL INFO Trees [0] 15/-1/-1->14->13 [1] 15/-1/-1->14->13
+GCRHYP3C210:9991:10225 [14] NCCL INFO Setting affinity for GPU 1 to ff,ffff0000,00ffffff
+GCRHYP3C210:9960:10224 [2] NCCL INFO Parsed SCCL Algorithm /home/lifli/test.xml successfully.
+GCRHYP3C210:9960:10224 [2] NCCL INFO Trees [0] 3/-1/-1->2->1 [1] 3/-1/-1->2->1
+GCRHYP3C210:9961:10223 [3] NCCL INFO Parsed SCCL Algorithm /home/lifli/test.xml successfully.
+GCRHYP3C210:9961:10223 [3] NCCL INFO Trees [0] 4/-1/-1->3->2 [1] 4/-1/-1->3->2
+GCRHYP3C210:9961:10223 [3] NCCL INFO Setting affinity for GPU 12 to ffffff00,0000ffff,ff000000
+GCRHYP3C210:9959:10218 [1] NCCL INFO Parsed SCCL Algorithm /home/lifli/test.xml successfully.
+GCRHYP3C210:9959:10218 [1] NCCL INFO Trees [0] 2/-1/-1->1->0 [1] 2/-1/-1->1->0
+GCRHYP3C210:9959:10218 [1] NCCL INFO Setting affinity for GPU 14 to ffffff00,0000ffff,ff000000
+GCRHYP3C210:9994:10227 [15] NCCL INFO Parsed SCCL Algorithm /home/lifli/test.xml successfully.
+GCRHYP3C210:9994:10227 [15] NCCL INFO Trees [0] -1/-1/-1->15->14 [1] -1/-1/-1->15->14
+GCRHYP3C210:9966:10215 [6] NCCL INFO Parsed SCCL Algorithm /home/lifli/test.xml successfully.
+GCRHYP3C210:9966:10215 [6] NCCL INFO Trees [0] 7/-1/-1->6->5 [1] 7/-1/-1->6->5
+GCRHYP3C210:9978:10220 [10] NCCL INFO Parsed SCCL Algorithm /home/lifli/test.xml successfully.
+GCRHYP3C210:9978:10220 [10] NCCL INFO Trees [0] 11/-1/-1->10->9 [1] 11/-1/-1->10->9
+GCRHYP3C210:9978:10220 [10] NCCL INFO Setting affinity for GPU 5 to ff,ffff0000,00ffffff
+GCRHYP3C210:9958:10077 [0] NCCL INFO Parsed SCCL Algorithm /home/lifli/test.xml successfully.
+GCRHYP3C210:9958:10077 [0] NCCL INFO Channel 00/02 :    0  15  14  13  12  11  10   9   8   7   6   5   4   3   2   1  16
+GCRHYP3C210:9958:10077 [0] NCCL INFO Channel 01/02 :    0  15  14  13  12  11  10   9   8   7   6   5   4   3   2   1  16
+GCRHYP3C210:9958:10077 [0] NCCL INFO Trees [0] 1/16/-1->0->-1 [1] 1/-1/-1->0->16
+GCRHYP3C214:6839:6866 [0] NCCL INFO Channel 00 : 16[e7000] -> 0[e7000] [send] via NET/IB/8/GDRDMA
+GCRHYP3C214:6839:6866 [0] NCCL INFO Channel 01 : 16[e7000] -> 0[e7000] [send] via NET/IB/8/GDRDMA
+GCRHYP3C210:9959:10218 [1] NCCL INFO Channel 00 : 1[e5000] -> 16[e7000] [send] via NET/IB/8/GDRDMA
+GCRHYP3C210:9958:10077 [0] NCCL INFO Channel 00 : 16[e7000] -> 0[e7000] [receive] via NET/IB/8/GDRDMA
+GCRHYP3C210:9959:10218 [1] NCCL INFO Channel 01 : 1[e5000] -> 16[e7000] [send] via NET/IB/8/GDRDMA
+GCRHYP3C210:9958:10077 [0] NCCL INFO Channel 01 : 16[e7000] -> 0[e7000] [receive] via NET/IB/8/GDRDMA
+GCRHYP3C210:9962:10219 [4] NCCL INFO Channel 00 : 4[be000] -> 3[e0000] via P2P/IPC
+GCRHYP3C210:9963:10226 [5] NCCL INFO Channel 00 : 5[bc000] -> 4[be000] via P2P/IPC
+GCRHYP3C210:9982:10221 [11] NCCL INFO Channel 00 : 11[57000] -> 10[59000] via P2P/IPC
+GCRHYP3C210:9988:10213 [13] NCCL INFO Channel 00 : 13[39000] -> 12[3b000] via P2P/IPC
+GCRHYP3C210:9975:10217 [9] NCCL INFO Channel 00 : 9[5c000] -> 8[5e000] via P2P/IPC
+GCRHYP3C210:9972:10216 [8] NCCL INFO Channel 00 : 8[5e000] -> 7[b7000] via P2P/IPC
+GCRHYP3C210:9968:10222 [7] NCCL INFO Channel 00 : 7[b7000] -> 6[b9000] via P2P/IPC
+GCRHYP3C210:9984:10214 [12] NCCL INFO Channel 00 : 12[3b000] -> 11[57000] via P2P/IPC
+GCRHYP3C210:9991:10225 [14] NCCL INFO Channel 00 : 14[36000] -> 13[39000] via P2P/IPC
+GCRHYP3C210:9960:10224 [2] NCCL INFO Channel 00 : 2[e2000] -> 1[e5000] via P2P/IPC
+GCRHYP3C210:9978:10220 [10] NCCL INFO Channel 00 : 10[59000] -> 9[5c000] via P2P/IPC
+GCRHYP3C210:9961:10223 [3] NCCL INFO Channel 00 : 3[e0000] -> 2[e2000] via P2P/IPC
+GCRHYP3C210:9966:10215 [6] NCCL INFO Channel 00 : 6[b9000] -> 5[bc000] via P2P/IPC
+GCRHYP3C210:9962:10219 [4] NCCL INFO Channel 01 : 4[be000] -> 3[e0000] via P2P/IPC
+GCRHYP3C210:9963:10226 [5] NCCL INFO Channel 01 : 5[bc000] -> 4[be000] via P2P/IPC
+GCRHYP3C210:9982:10221 [11] NCCL INFO Channel 01 : 11[57000] -> 10[59000] via P2P/IPC
+GCRHYP3C210:9988:10213 [13] NCCL INFO Channel 01 : 13[39000] -> 12[3b000] via P2P/IPC
+GCRHYP3C210:9972:10216 [8] NCCL INFO Channel 01 : 8[5e000] -> 7[b7000] via P2P/IPC
+GCRHYP3C210:9975:10217 [9] NCCL INFO Channel 01 : 9[5c000] -> 8[5e000] via P2P/IPC
+GCRHYP3C210:9968:10222 [7] NCCL INFO Channel 01 : 7[b7000] -> 6[b9000] via P2P/IPC
+GCRHYP3C210:9984:10214 [12] NCCL INFO Channel 01 : 12[3b000] -> 11[57000] via P2P/IPC
+GCRHYP3C210:9991:10225 [14] NCCL INFO Channel 01 : 14[36000] -> 13[39000] via P2P/IPC
+GCRHYP3C210:9960:10224 [2] NCCL INFO Channel 01 : 2[e2000] -> 1[e5000] via P2P/IPC
+GCRHYP3C210:9978:10220 [10] NCCL INFO Channel 01 : 10[59000] -> 9[5c000] via P2P/IPC
+GCRHYP3C210:9961:10223 [3] NCCL INFO Channel 01 : 3[e0000] -> 2[e2000] via P2P/IPC
+GCRHYP3C210:9966:10215 [6] NCCL INFO Channel 01 : 6[b9000] -> 5[bc000] via P2P/IPC
+GCRHYP3C214:6839:6866 [0] NCCL INFO Channel 00 : 1[e5000] -> 16[e7000] [receive] via NET/IB/8/GDRDMA
+GCRHYP3C214:6839:6866 [0] NCCL INFO Channel 01 : 1[e5000] -> 16[e7000] [receive] via NET/IB/8/GDRDMA
+GCRHYP3C214:6839:6866 [0] NCCL INFO Connected all rings
+GCRHYP3C210:9972:10216 [8] NCCL INFO Connected all rings
+GCRHYP3C210:9984:10214 [12] NCCL INFO Connected all rings
+GCRHYP3C210:9988:10213 [13] NCCL INFO Connected all rings
+GCRHYP3C214:6839:6866 [0] NCCL INFO Channel 00 : 0[e7000] -> 16[e7000] [receive] via NET/IB/8/GDRDMA
+GCRHYP3C210:9982:10221 [11] NCCL INFO Connected all rings
+GCRHYP3C210:9975:10217 [9] NCCL INFO Connected all rings
+GCRHYP3C210:9978:10220 [10] NCCL INFO Connected all rings
+GCRHYP3C210:9962:10219 [4] NCCL INFO Connected all rings
+GCRHYP3C210:9961:10223 [3] NCCL INFO Connected all rings
+GCRHYP3C210:9968:10222 [7] NCCL INFO Connected all rings
+GCRHYP3C210:9963:10226 [5] NCCL INFO Connected all rings
+GCRHYP3C210:9966:10215 [6] NCCL INFO Connected all rings
+GCRHYP3C214:6839:6866 [0] NCCL INFO Channel 01 : 0[e7000] -> 16[e7000] [receive] via NET/IB/8/GDRDMA
+GCRHYP3C210:9958:10077 [0] NCCL INFO Channel 00 : 0[e7000] -> 15[34000] via P2P/IPC
+GCRHYP3C210:9958:10077 [0] NCCL INFO Channel 01 : 0[e7000] -> 15[34000] via P2P/IPC
+GCRHYP3C210:9972:10216 [8] NCCL INFO Channel 00 : 8[5e000] -> 9[5c000] via P2P/IPC
+GCRHYP3C210:9984:10214 [12] NCCL INFO Channel 00 : 12[3b000] -> 13[39000] via P2P/IPC
+GCRHYP3C210:9988:10213 [13] NCCL INFO Channel 00 : 13[39000] -> 14[36000] via P2P/IPC
+GCRHYP3C210:9958:10077 [0] NCCL INFO Connected all rings
+GCRHYP3C210:9975:10217 [9] NCCL INFO Channel 00 : 9[5c000] -> 10[59000] via P2P/IPC
+GCRHYP3C210:9982:10221 [11] NCCL INFO Channel 00 : 11[57000] -> 12[3b000] via P2P/IPC
+GCRHYP3C210:9978:10220 [10] NCCL INFO Channel 00 : 10[59000] -> 11[57000] via P2P/IPC
+GCRHYP3C210:9961:10223 [3] NCCL INFO Channel 00 : 3[e0000] -> 4[be000] via P2P/IPC
+GCRHYP3C210:9962:10219 [4] NCCL INFO Channel 00 : 4[be000] -> 5[bc000] via P2P/IPC
+GCRHYP3C210:9968:10222 [7] NCCL INFO Channel 00 : 7[b7000] -> 8[5e000] via P2P/IPC
+GCRHYP3C210:9963:10226 [5] NCCL INFO Channel 00 : 5[bc000] -> 6[b9000] via P2P/IPC
+GCRHYP3C210:9966:10215 [6] NCCL INFO Channel 00 : 6[b9000] -> 7[b7000] via P2P/IPC
+GCRHYP3C210:9959:10218 [1] NCCL INFO Connected all rings
+GCRHYP3C210:9972:10216 [8] NCCL INFO Channel 01 : 8[5e000] -> 9[5c000] via P2P/IPC
+GCRHYP3C210:9984:10214 [12] NCCL INFO Channel 01 : 12[3b000] -> 13[39000] via P2P/IPC
+GCRHYP3C210:9988:10213 [13] NCCL INFO Channel 01 : 13[39000] -> 14[36000] via P2P/IPC
+GCRHYP3C210:9958:10077 [0] NCCL INFO Channel 00 : 0[e7000] -> 1[e5000] via P2P/IPC
+GCRHYP3C210:9994:10227 [15] NCCL INFO Channel 00 : 15[34000] -> 14[36000] via P2P/IPC
+GCRHYP3C210:9982:10221 [11] NCCL INFO Channel 01 : 11[57000] -> 12[3b000] via P2P/IPC
+GCRHYP3C210:9975:10217 [9] NCCL INFO Channel 01 : 9[5c000] -> 10[59000] via P2P/IPC
+GCRHYP3C210:9978:10220 [10] NCCL INFO Channel 01 : 10[59000] -> 11[57000] via P2P/IPC
+GCRHYP3C210:9961:10223 [3] NCCL INFO Channel 01 : 3[e0000] -> 4[be000] via P2P/IPC
+GCRHYP3C210:9962:10219 [4] NCCL INFO Channel 01 : 4[be000] -> 5[bc000] via P2P/IPC
+GCRHYP3C210:9968:10222 [7] NCCL INFO Channel 01 : 7[b7000] -> 8[5e000] via P2P/IPC
+GCRHYP3C210:9963:10226 [5] NCCL INFO Channel 01 : 5[bc000] -> 6[b9000] via P2P/IPC
+GCRHYP3C210:9966:10215 [6] NCCL INFO Channel 01 : 6[b9000] -> 7[b7000] via P2P/IPC
+GCRHYP3C210:9958:10077 [0] NCCL INFO Channel 01 : 0[e7000] -> 1[e5000] via P2P/IPC
+GCRHYP3C210:9994:10227 [15] NCCL INFO Channel 01 : 15[34000] -> 14[36000] via P2P/IPC
+GCRHYP3C210:9960:10224 [2] NCCL INFO Connected all rings
+GCRHYP3C210:9994:10227 [15] NCCL INFO Connected all rings
+GCRHYP3C210:9972:10216 [8] NCCL INFO Connected all trees
+GCRHYP3C210:9984:10214 [12] NCCL INFO Connected all trees
+GCRHYP3C210:9972:10216 [8] NCCL INFO 2 coll channels, 2 p2p channels, 1 p2p channels per peer
+GCRHYP3C210:9972:10216 [8] NCCL INFO Connected 1 SCCL algorithms
+GCRHYP3C210:9972:10216 [8] NCCL INFO threadThresholds 8/8/64 | 136/8/64 | 8/8/64 | 8/8/64
+GCRHYP3C210:9984:10214 [12] NCCL INFO 2 coll channels, 2 p2p channels, 1 p2p channels per peer
+GCRHYP3C210:9984:10214 [12] NCCL INFO Connected 1 SCCL algorithms
+GCRHYP3C210:9984:10214 [12] NCCL INFO threadThresholds 8/8/64 | 136/8/64 | 8/8/64 | 8/8/64
+GCRHYP3C210:9978:10220 [10] NCCL INFO Connected all trees
+GCRHYP3C210:9978:10220 [10] NCCL INFO 2 coll channels, 2 p2p channels, 1 p2p channels per peer
+GCRHYP3C210:9978:10220 [10] NCCL INFO Connected 1 SCCL algorithms
+GCRHYP3C210:9978:10220 [10] NCCL INFO threadThresholds 8/8/64 | 136/8/64 | 8/8/64 | 8/8/64
+GCRHYP3C210:9962:10219 [4] NCCL INFO Connected all trees
+GCRHYP3C210:9962:10219 [4] NCCL INFO 2 coll channels, 2 p2p channels, 1 p2p channels per peer
+GCRHYP3C210:9962:10219 [4] NCCL INFO Connected 1 SCCL algorithms
+GCRHYP3C210:9962:10219 [4] NCCL INFO threadThresholds 8/8/64 | 136/8/64 | 8/8/64 | 8/8/64
+GCRHYP3C210:9968:10222 [7] NCCL INFO Connected all trees
+GCRHYP3C210:9966:10215 [6] NCCL INFO Connected all trees
+GCRHYP3C210:9968:10222 [7] NCCL INFO 2 coll channels, 2 p2p channels, 1 p2p channels per peer
+GCRHYP3C210:9968:10222 [7] NCCL INFO Connected 1 SCCL algorithms
+GCRHYP3C210:9968:10222 [7] NCCL INFO threadThresholds 8/8/64 | 136/8/64 | 8/8/64 | 8/8/64
+GCRHYP3C210:9966:10215 [6] NCCL INFO 2 coll channels, 2 p2p channels, 1 p2p channels per peer
+GCRHYP3C210:9966:10215 [6] NCCL INFO Connected 1 SCCL algorithms
+GCRHYP3C210:9966:10215 [6] NCCL INFO threadThresholds 8/8/64 | 136/8/64 | 8/8/64 | 8/8/64
+GCRHYP3C210:9982:10221 [11] NCCL INFO Connected all trees
+GCRHYP3C210:9982:10221 [11] NCCL INFO 2 coll channels, 2 p2p channels, 1 p2p channels per peer
+GCRHYP3C210:9982:10221 [11] NCCL INFO Connected 1 SCCL algorithms
+GCRHYP3C210:9982:10221 [11] NCCL INFO threadThresholds 8/8/64 | 136/8/64 | 8/8/64 | 8/8/64
+GCRHYP3C210:9975:10217 [9] NCCL INFO Connected all trees
+GCRHYP3C210:9975:10217 [9] NCCL INFO 2 coll channels, 2 p2p channels, 1 p2p channels per peer
+GCRHYP3C210:9975:10217 [9] NCCL INFO Connected 1 SCCL algorithms
+GCRHYP3C210:9975:10217 [9] NCCL INFO threadThresholds 8/8/64 | 136/8/64 | 8/8/64 | 8/8/64
+GCRHYP3C210:9963:10226 [5] NCCL INFO Connected all trees
+GCRHYP3C210:9959:10218 [1] NCCL INFO Channel 00 : 1[e5000] -> 2[e2000] via P2P/IPC
+GCRHYP3C210:9963:10226 [5] NCCL INFO 2 coll channels, 2 p2p channels, 1 p2p channels per peer
+GCRHYP3C210:9963:10226 [5] NCCL INFO Connected 1 SCCL algorithms
+GCRHYP3C210:9963:10226 [5] NCCL INFO threadThresholds 8/8/64 | 136/8/64 | 8/8/64 | 8/8/64
+GCRHYP3C210:9959:10218 [1] NCCL INFO Channel 01 : 1[e5000] -> 2[e2000] via P2P/IPC
+GCRHYP3C210:9991:10225 [14] NCCL INFO Connected all rings
+GCRHYP3C210:9960:10224 [2] NCCL INFO Channel 00 : 2[e2000] -> 3[e0000] via P2P/IPC
+GCRHYP3C210:9960:10224 [2] NCCL INFO Channel 01 : 2[e2000] -> 3[e0000] via P2P/IPC
+GCRHYP3C210:9991:10225 [14] NCCL INFO Channel 00 : 14[36000] -> 15[34000] via P2P/IPC
+GCRHYP3C210:9984:10214 [12] NCCL INFO comm 0x7fa815f56010 rank 12 nranks 17 cudaDev 12 busId 3b000 - Init COMPLETE
+GCRHYP3C210:9978:10220 [10] NCCL INFO comm 0x7fb3e9f56010 rank 10 nranks 17 cudaDev 10 busId 59000 - Init COMPLETE
+GCRHYP3C210:9960:10224 [2] NCCL INFO Connected all trees
+GCRHYP3C210:9960:10224 [2] NCCL INFO 2 coll channels, 2 p2p channels, 1 p2p channels per peer
+GCRHYP3C210:9960:10224 [2] NCCL INFO Connected 1 SCCL algorithms
+GCRHYP3C210:9960:10224 [2] NCCL INFO threadThresholds 8/8/64 | 136/8/64 | 8/8/64 | 8/8/64
+GCRHYP3C210:9961:10223 [3] NCCL INFO Connected all trees
+GCRHYP3C210:9961:10223 [3] NCCL INFO 2 coll channels, 2 p2p channels, 1 p2p channels per peer
+GCRHYP3C210:9961:10223 [3] NCCL INFO Connected 1 SCCL algorithms
+GCRHYP3C210:9961:10223 [3] NCCL INFO threadThresholds 8/8/64 | 136/8/64 | 8/8/64 | 8/8/64
+GCRHYP3C210:9991:10225 [14] NCCL INFO Channel 01 : 14[36000] -> 15[34000] via P2P/IPC
+GCRHYP3C210:9958:10077 [0] NCCL INFO Channel 00 : 0[e7000] -> 16[e7000] [send] via NET/IB/8/GDRDMA
+GCRHYP3C210:9972:10216 [8] NCCL INFO comm 0x7f64f5f56010 rank 8 nranks 17 cudaDev 8 busId 5e000 - Init COMPLETE
+GCRHYP3C210:9962:10219 [4] NCCL INFO comm 0x7efc85f56010 rank 4 nranks 17 cudaDev 4 busId be000 - Init COMPLETE
+GCRHYP3C210:9968:10222 [7] NCCL INFO comm 0x7f7ea1f56010 rank 7 nranks 17 cudaDev 7 busId b7000 - Init COMPLETE
+GCRHYP3C210:9966:10215 [6] NCCL INFO comm 0x7f7e1df56010 rank 6 nranks 17 cudaDev 6 busId b9000 - Init COMPLETE
+GCRHYP3C210:9963:10226 [5] NCCL INFO comm 0x7f35d9f56010 rank 5 nranks 17 cudaDev 5 busId bc000 - Init COMPLETE
+GCRHYP3C210:9958:10077 [0] NCCL INFO Channel 01 : 0[e7000] -> 16[e7000] [send] via NET/IB/8/GDRDMA
+GCRHYP3C210:9959:10218 [1] NCCL INFO Channel 00 : 1[e5000] -> 0[e7000] via P2P/IPC
+GCRHYP3C210:9982:10221 [11] NCCL INFO comm 0x7f3bd5f56010 rank 11 nranks 17 cudaDev 11 busId 57000 - Init COMPLETE
+GCRHYP3C210:9975:10217 [9] NCCL INFO comm 0x7ff521f56010 rank 9 nranks 17 cudaDev 9 busId 5c000 - Init COMPLETE
+GCRHYP3C210:9994:10227 [15] NCCL INFO Connected all trees
+GCRHYP3C210:9994:10227 [15] NCCL INFO 2 coll channels, 2 p2p channels, 1 p2p channels per peer
+GCRHYP3C210:9994:10227 [15] NCCL INFO Connected 1 SCCL algorithms
+GCRHYP3C210:9994:10227 [15] NCCL INFO threadThresholds 8/8/64 | 136/8/64 | 8/8/64 | 8/8/64
+GCRHYP3C210:9959:10218 [1] NCCL INFO Channel 01 : 1[e5000] -> 0[e7000] via P2P/IPC
+GCRHYP3C210:9988:10213 [13] NCCL INFO Connected all trees
+GCRHYP3C210:9988:10213 [13] NCCL INFO 2 coll channels, 2 p2p channels, 1 p2p channels per peer
+GCRHYP3C210:9988:10213 [13] NCCL INFO Connected 1 SCCL algorithms
+GCRHYP3C210:9988:10213 [13] NCCL INFO threadThresholds 8/8/64 | 136/8/64 | 8/8/64 | 8/8/64
+GCRHYP3C210:9991:10225 [14] NCCL INFO Connected all trees
+GCRHYP3C210:9991:10225 [14] NCCL INFO 2 coll channels, 2 p2p channels, 1 p2p channels per peer
+GCRHYP3C210:9991:10225 [14] NCCL INFO Connected 1 SCCL algorithms
+GCRHYP3C210:9991:10225 [14] NCCL INFO threadThresholds 8/8/64 | 136/8/64 | 8/8/64 | 8/8/64
+GCRHYP3C210:9960:10224 [2] NCCL INFO comm 0x7f9041f56010 rank 2 nranks 17 cudaDev 2 busId e2000 - Init COMPLETE
+GCRHYP3C210:9961:10223 [3] NCCL INFO comm 0x7f2bf9f56010 rank 3 nranks 17 cudaDev 3 busId e0000 - Init COMPLETE
+GCRHYP3C210:9959:10218 [1] NCCL INFO Connected all trees
+GCRHYP3C210:9959:10218 [1] NCCL INFO 2 coll channels, 2 p2p channels, 1 p2p channels per peer
+GCRHYP3C210:9959:10218 [1] NCCL INFO Connected 1 SCCL algorithms
+GCRHYP3C210:9959:10218 [1] NCCL INFO threadThresholds 8/8/64 | 136/8/64 | 8/8/64 | 8/8/64
+GCRHYP3C210:9994:10227 [15] NCCL INFO comm 0x7f7cc1f56010 rank 15 nranks 17 cudaDev 15 busId 34000 - Init COMPLETE
+GCRHYP3C210:9988:10213 [13] NCCL INFO comm 0x7f4125f56010 rank 13 nranks 17 cudaDev 13 busId 39000 - Init COMPLETE
+GCRHYP3C210:9991:10225 [14] NCCL INFO comm 0x7f66a9f56010 rank 14 nranks 17 cudaDev 14 busId 36000 - Init COMPLETE
+GCRHYP3C210:9959:10218 [1] NCCL INFO comm 0x7f47d1f56010 rank 1 nranks 17 cudaDev 1 busId e5000 - Init COMPLETE
+GCRHYP3C214:6839:6866 [0] NCCL INFO Connected all trees
+GCRHYP3C214:6839:6866 [0] NCCL INFO 2 coll channels, 2 p2p channels, 1 p2p channels per peer
+GCRHYP3C214:6839:6866 [0] NCCL INFO Connected 1 SCCL algorithms
+GCRHYP3C214:6839:6866 [0] NCCL INFO threadThresholds 8/8/64 | 136/8/64 | 8/8/64 | 8/8/64
+GCRHYP3C210:9958:10077 [0] NCCL INFO Connected all trees
+GCRHYP3C210:9958:10077 [0] NCCL INFO 2 coll channels, 2 p2p channels, 1 p2p channels per peer
+GCRHYP3C210:9958:10077 [0] NCCL INFO Connected 1 SCCL algorithms
+GCRHYP3C210:9958:10077 [0] NCCL INFO threadThresholds 8/8/64 | 136/8/64 | 8/8/64 | 8/8/64
+GCRHYP3C214:6839:6866 [0] NCCL INFO comm 0x7fef3df56010 rank 16 nranks 17 cudaDev 0 busId e7000 - Init COMPLETE
+GCRHYP3C210:9958:10077 [0] NCCL INFO comm 0x7ff1a9f56010 rank 0 nranks 17 cudaDev 0 busId e7000 - Init COMPLETE
+#
+#                                                     out-of-place                       in-place          
+#       size         count    type   redop     time   algbw   busbw  error     time   algbw   busbw  error
+#        (B)    (elements)                     (us)  (GB/s)  (GB/s)            (us)  (GB/s)  (GB/s)       
+GCRHYP3C210:9958:9958 [0] NCCL INFO Launch mode Parallel
+        1024           256   float     sum    782.9    0.00    0.00  3e+00    38.82    0.03    0.05  5e-07
+        2048           512   float     sum    768.1    0.00    0.01  3e+00    38.07    0.05    0.10  5e-07
+        4096          1024   float     sum    795.3    0.01    0.01  3e+00    41.13    0.10    0.19  5e-07
+        8192          2048   float     sum    863.1    0.01    0.02  3e+00    71.36    0.11    0.22  5e-07
+       16384          4096   float     sum    898.8    0.02    0.03  3e+00    81.15    0.20    0.38  5e-07
+       32768          8192   float     sum   1023.6    0.03    0.06  3e+00    91.92    0.36    0.67  5e-07
+       65536         16384   float     sum   1208.2    0.05    0.10  3e+00    101.4    0.65    1.22  5e-07
+      131072         32768   float     sum   1522.2    0.09    0.16  3e+00    111.0    1.18    2.22  5e-07
+      262144         65536   float     sum   2479.4    0.11    0.20  3e+00    133.8    1.96    3.69  5e-07
+      524288        131072   float     sum   4544.4    0.12    0.22  3e+00    189.9    2.76    5.20  5e-07
+     1048576        262144   float     sum   9045.5    0.12    0.22  3e+00    279.2    3.76    7.07  5e-07
+     2097152        524288   float     sum    18952    0.11    0.21  3e+00    543.3    3.86    7.27  5e-07
+     4194304       1048576   float     sum    37661    0.11    0.21  3e+00   1060.1    3.96    7.45  5e-07
+     8388608       2097152   float     sum    75370    0.11    0.21  3e+00   2336.6    3.59    6.76  5e-07
+    16777216       4194304   float     sum   150216    0.11    0.21  3e+00   2267.5    7.40   13.93  5e-07
+    33554432       8388608   float     sum   300689    0.11    0.21  3e+00   4062.4    8.26   15.55  5e-07
+    67108864      16777216   float     sum   601137    0.11    0.21  3e+00   7674.0    8.74   16.46  5e-07
+   134217728      33554432   float     sum  1202784    0.11    0.21  3e+00    16731    8.02   15.10  5e-07
+   268435456      67108864   float     sum  2407052    0.11    0.21  3e+00    32767    8.19   15.42  5e-07
+   536870912     134217728   float     sum  4811199    0.11    0.21  3e+00    64338    8.34   15.71  5e-07
+  1073741824     268435456   float     sum  9616309    0.11    0.21  3e+00   127274    8.44   15.88  5e-07
+  2147483648     536870912   float     sum  19240553    0.11    0.21  3e+00   254441    8.44   15.89  5e-07
+# Out of bounds values : 374 FAILED
+# Avg bus bandwidth    : 3.85778 
+#

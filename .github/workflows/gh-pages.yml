@@ -1,0 +1,39 @@
+name: pages-generate
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  generate:
+    runs-on: ubuntu-20.04
+    permissions:
+      contents: write
+    concurrency:
+      group: ${{ github.workflow }}-${{ github.ref }}
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: setup python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.8
+
+      - name: install dependencies
+        run: |
+          pip install -r requirements.txt
+              
+      - name: generate graphs
+        run: |
+          python generate_graphs.py --timestamp
+
+      - name: deploy
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./
+          enable_jekyll: true
+          # Excluding .gitignore is crucial, as this step uses git internally
+          exclude_assets: .github,**/.gitignore,data,requirements.txt
