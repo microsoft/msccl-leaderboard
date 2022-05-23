@@ -140,7 +140,6 @@ def format_size(size):
 def plot_common(ax, sizes, speedup):
     plt.axhline(y=1, color='black', linestyle='--', linewidth=0.75)
     ax.plot(sizes, speedup, color='red')
-    ax.get_yaxis().set_major_locator(matplotlib.ticker.MultipleLocator(base=1.0))
     ax.get_xaxis().set_major_formatter(
         matplotlib.ticker.FuncFormatter(lambda x, p: format_size(x)))
 
