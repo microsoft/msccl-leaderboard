@@ -20,7 +20,7 @@ baseline_name = 'nccl'
 graph_width = 4
 graph_aspect_ratio = 4/3
 matplotlib_rc_params = {
-    'font.size': '16'
+    'font.size': '10'
 }
 
 
@@ -141,6 +141,7 @@ def format_size(size):
 def plot_common(ax, sizes, speedup):
     plt.axhline(y=1, color='black', linestyle='--', linewidth=0.75)
     ax.plot(sizes, speedup, color='red')
+    ax.set_xscale('log')
     ax.get_xaxis().set_major_formatter(
         matplotlib.ticker.FuncFormatter(lambda x, p: format_size(x)))
 
