@@ -52,13 +52,14 @@ def parse_nccl_tests_log(path, inplace):
     #                                                     out-of-place                       in-place          
     #       size         count    type   redop     time   algbw   busbw  error     time   algbw   busbw  error
     #        1024           256   float     sum   4019.3    0.00    0.00  4e+00    49.33    0.02    0.04  5e-07
-    pattern = re.compile(f'\s*(\d+)(?:\s+[^\s]+){{{7 if inplace else 3}}}\s+([\d\.]+).*')
+    pattern = re.compile(f'(\[1,0\]<stdout>:)?\s*(\d+)(?:\s+[^\s]+){{{7 if inplace else 2}}}\s+([\d\.]+).*')
     with open(path) as f:
         for line in f.readlines():
             m = pattern.match(line)
             if m is not None:
-                sizes.append(int(m.group(1)))
-                times.append(float(m.group(2)))
+                print(m[1], m[2], m[3])
+                sizes.append(int(m.group(2)))
+                times.append(float(m.group(3)))
     return np.array(sizes), np.array(times)
 
 
