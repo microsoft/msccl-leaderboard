@@ -43,15 +43,16 @@ timestamp = f'_{int(time.time())}' if args.timestamp else ''
 #######################
 
 
-def parse_nccl_tests_log(path):
+def parse_nccl_tests_log(path, inplace):
     """ Given a path to a nccl-tests log file load it, parse the timing measurements and output the size and time
     columns as numpy arrays. """
     sizes = []
     times = []
     # Example header and data line:
+    #                                                     out-of-place                       in-place          
     #       size         count    type   redop     time   algbw   busbw  error     time   algbw   busbw  error
     #        1024           256   float     sum   4019.3    0.00    0.00  4e+00    49.33    0.02    0.04  5e-07
-    pattern = re.compile('\s*(\d+)(?:\s+[^\s]+){3}\s+([\d\.]+).*')
+    pattern = re.compile(f'\s*(\d+)(?:\s+[^\s]+){{{7 if inplace else 3}}}\s+([\d\.]+).*')
     with open(path) as f:
         for line in f.readlines():
             m = pattern.match(line)
@@ -75,11 +76,22 @@ def find_data_logs():
     return data_logs
 
 
+def is_inplace(collective):
+    _, place = collective.split('-')
+    if place == 'inplace':
+        return True
+    elif place == 'outofplace':
+        return False
+    else:
+        raise ValueError(f'Unknown place {place}')
+
+
 def load_data(data_logs):
     """ Load all the data logs into a dictionary keyed by (configuration, collective, name) and return it. """
     data = {}
     for key, path in data_logs.items():
-        data[key] = parse_nccl_tests_log(path)
+        config, collective, name = key
+        data[key] = parse_nccl_tests_log(path, is_inplace(collective))
     return data
 
 
@@ -164,6 +176,10 @@ def thumbnail_embed(config, collective):
     return f'![Speedup for {collective} on {config}]({thumbnail_path(config, collective)})'
 
 
+def format_collective(collective):
+    return collective.split('-')[0]
+
+
 # Gather table of thumbnail paths
 thumbnails = []
 for config in configs:
@@ -179,4 +195,4 @@ table_path = 'speedups_table.md'
 with open(table_path, 'w') as f:
     print(f'Writing {os.path.abspath(table_path)}')
     f.write(tabulate.tabulate(thumbnails, headers=[
-            'Configuration'] + collectives, tablefmt='github'))
+            'Configuration'] + [format_collective(x) for x in collectives], tablefmt='github'))
