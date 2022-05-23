@@ -1,3 +1,4 @@
-| Configuration   | Allreduce                                                                                            |
-|-----------------|------------------------------------------------------------------------------------------------------|
-| 1xNDv4          | ![Speedup for Allreduce-inplace on 1xNDv4](graphs/1xNDv4_Allreduce-inplace_thumbnail_1653346305.png) |
+| Configuration   | Allreduce                                                                                            | Alltoall                                                                                                   |
+|-----------------|------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------|
+| 1xNDv4          | ![Speedup for Allreduce-inplace on 1xNDv4](graphs/1xNDv4_Allreduce-inplace_thumbnail_1653346878.png) |                                                                                                            |
+| 64xNDv4         |                                                                                                      | ![Speedup for Alltoall-outofplace on 64xNDv4](graphs/64xNDv4_Alltoall-outofplace_thumbnail_1653346878.png) |
