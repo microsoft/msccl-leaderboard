@@ -1,0 +1,6 @@
+content:
+  baseline-nccl-version: "2.8.4"
+
+theme: jekyll-theme-cayman
+github:
+  is_project_page: false
