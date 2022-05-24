@@ -24,7 +24,7 @@ matplotlib_rc_params = {
     'font.family':'sans-serif',
     'font.sans-serif':['Open Sans']
 }
-secondary_color = '#E9EBEC'
+secondary_color = '#CED0D1'
 
 
 #############
