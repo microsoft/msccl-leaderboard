@@ -31,11 +31,10 @@ matplotlib_rc_params = {
 # Parse command line arguments
 parser = argparse.ArgumentParser(
     description='Generate graphs for the MSCCL leaderboard page')
-# Argument to specify if a unique identifier should be added to all output file names
-parser.add_argument('--timestamp', action='store_true',
-                    help='Add a unique identifier to all graph file names')
+parser.add_argument('--prod', action='store_true')
 args = parser.parse_args()
-timestamp = f'_{int(time.time())}' if args.timestamp else ''
+timestamp = f'_{int(time.time())}' if args.prod else ''
+filetype = 'svg' if args.prod else 'png'
 
 
 #######################
@@ -57,7 +56,6 @@ def parse_nccl_tests_log(path, inplace):
         for line in f.readlines():
             m = pattern.match(line)
             if m is not None:
-                print(m[1], m[2], m[3])
                 sizes.append(int(m.group(2)))
                 times.append(float(m.group(3)))
     return np.array(sizes), np.array(times)
@@ -144,10 +142,15 @@ def plot_common(ax, sizes, speedup):
     ax.set_xscale('log')
     ax.get_xaxis().set_major_formatter(
         matplotlib.ticker.FuncFormatter(lambda x, p: format_size(x)))
+    # Tufte style simplifications
+    ax.spines['top'].set_visible(False)
+    ax.spines['right'].set_visible(False)
+    plt.minorticks_off()
+    ax.tick_params(direction='in')
 
 
 def thumbnail_path(config, collective):
-    return f'graphs/{config}_{collective}_thumbnail{timestamp}.png'
+    return f'graphs/{config}_{collective}_thumbnail{timestamp}.{filetype}'
 
 
 def plot_thumbnail(sizes, speedup):
