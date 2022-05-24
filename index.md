@@ -2,8 +2,6 @@
 title: MSCCL Leaderboard
 ---
 
-**This site is under construction. Assume that none of the data below is valid yet.**
-
 [Microsoft Collective Communication Library (MSCCL)](https://github.com/microsoft/msccl) is a platform to execute custom
 collective communication algorithms for multiple accelerators supported by Microsoft Azure. MSCCL enables hardware and
 application specific optimizations that can deliver huge speedups over unspecialized communication algorithms.
