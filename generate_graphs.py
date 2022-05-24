@@ -20,7 +20,9 @@ baseline_name = 'nccl'
 graph_width = 4
 graph_aspect_ratio = 4/3
 matplotlib_rc_params = {
-    'font.size': '10'
+    'font.size': '10',
+    'font.family':'sans-serif',
+    'font.sans-serif':['Open Sans']
 }
 secondary_color = '#A4A5A6'
 
