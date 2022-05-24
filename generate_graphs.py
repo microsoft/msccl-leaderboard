@@ -168,7 +168,7 @@ def plot_thumbnail(sizes, speedup):
     plot_common(ax, sizes, speedup)
     path = thumbnail_path(config, collective)
     print(f'Writing {os.path.abspath(path)}')
-    fig.savefig(path, bbox_inches='tight', dpi=300)
+    fig.savefig(path, bbox_inches='tight', pad_inches=0, dpi=300)
     plt.close(fig)
 
 
