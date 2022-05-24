@@ -22,6 +22,7 @@ graph_aspect_ratio = 4/3
 matplotlib_rc_params = {
     'font.size': '10'
 }
+secondary_color = '#A4A5A6'
 
 
 #############
@@ -137,14 +138,19 @@ def format_size(size):
 
 
 def plot_common(ax, sizes, speedup):
-    plt.axhline(y=1, color='black', linestyle='--', linewidth=0.75)
+    plt.axhline(y=1, color=secondary_color, linestyle='--', linewidth=0.75)
     ax.plot(sizes, speedup, color='red')
     ax.set_xscale('log')
     ax.get_xaxis().set_major_formatter(
         matplotlib.ticker.FuncFormatter(lambda x, p: format_size(x)))
-    # Tufte style simplifications
     ax.spines['top'].set_visible(False)
     ax.spines['right'].set_visible(False)
+    ax.spines['bottom'].set_color(secondary_color)
+    ax.spines['left'].set_color(secondary_color)
+    ax.tick_params(axis='x', colors=secondary_color)
+    ax.tick_params(axis='y', colors=secondary_color)
+    plt.setp(ax.get_xticklabels(), color='black')
+    plt.setp(ax.get_yticklabels(), color='black')
     plt.minorticks_off()
     ax.tick_params(direction='in')
 
@@ -160,7 +166,7 @@ def plot_thumbnail(sizes, speedup):
     plot_common(ax, sizes, speedup)
     path = thumbnail_path(config, collective)
     print(f'Writing {os.path.abspath(path)}')
-    fig.savefig(path, bbox_inches='tight')
+    fig.savefig(path, bbox_inches='tight', dpi=300)
     plt.close(fig)
 
 
