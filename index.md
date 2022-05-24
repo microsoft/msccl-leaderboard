@@ -22,4 +22,4 @@ NVIDIA A100 GPUs](https://docs.microsoft.com/en-us/azure/virtual-machines/nda100
 # Methods
 
 These speedups were produced by running the relevant benchmarks from [nccl-tests](https://github.com/NVIDIA/nccl-tests)
-on the target hardware configuration for MSCCL, with the algorithms available in [msccl-tools](https://github.com/microsoft/msccl-tools) and NCCL {{ site.content.baseline-nccl-version }}.
+on the target hardware configuration for MSCCL, with the algorithms available in [msccl-tools](https://github.com/microsoft/msccl-tools), and NCCL {{ site.content.baseline-nccl-version }}.
