@@ -27,7 +27,7 @@ jobs:
               
       - name: generate graphs
         run: |
-          python generate_graphs.py --timestamp
+          python generate_graphs.py --prod
 
       - name: deploy
         uses: peaceiris/actions-gh-pages@v3
