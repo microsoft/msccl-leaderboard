@@ -32,28 +32,49 @@ import xml.etree.ElementTree as ET
 #   Such as the separator for the CSV file.
 #
 def main():
+
+    # Default mpirun commandline
+    defaultMpirunCmdLine = "mpirun --bind-to numa --tag-output --allow-run-as-root" + \
+        " -hostfile /job/hostfile -mca pml ob1 -mca btl ^openib -mca btl_tcp_if_include eth0"
+
+
+
+    # Obtain the home directory of the user
+    homeDir = os.path.expanduser("~")
+
     # Setup an argument parser to parse the command line arguments
-    parser = argparse.ArgumentParser(description='Run NCCL benchmarks tests using NCCL and MSCCL')
-    parser.add_argument('-m', '--mode', type=str, help='mode: is either "test" or "run" where "test" indicates that the program should run in test mode and "run" indicates that the program should actually run the benchmarks.', default="run", choices=["test", "run"])
-    parser.add_argument('-d', '--directory', type=str, help='directory: is the directory where the MSCCL xml files are located', default="sccl-presynth/sccl_presynth")
+    parser = argparse.ArgumentParser(description='Run NCCL benchmarks tests using NCCL and MSCCL', formatter_class=argparse.ArgumentDefaultsHelpFormatter)
+    parser.add_argument('-r', '--runMode', type=str, help='runMode: is either "test" or "run" where "test" indicates that the program should run in test mode and "run" indicates that the program should actually run the benchmarks.', default="run", choices=["test", "run"])
+    parser.add_argument('-d', '--directory', type=str, help='directory: is the directory where the MSCCL xml files are located', default=homeDir + "/sccl-presynth/sccl_presynth")
     parser.add_argument('-f', '--filter', type=str, help='filter: is a filter in the style of https://docs.python.org/3/library/fnmatch.html for files in the directory that will be tested', required=True)
     parser.add_argument('-o', '--outputDirectory', type=str, help='outputDirectory: is the directory where the output files will be placed', required=True)
-    parser.add_argument('-e', '--endBufSize', type=str, help='endBufSize: is the end buffer size to use for the test. It is optional and defaults to 32MB.', default="32MB")
+    parser.add_argument('-m', '--msccl', type=str, help='path to msccl repo working directory', default=homeDir + "/msccl")
+    parser.add_argument('-t', '--mscclTools', type=str, help='path to msccl-tools repo working directory', default=homeDir + "/msccl-tools")
+    parser.add_argument('-n', '--ncclTests', type=str, help='path to nccl-tests repo working directory', default=homeDir + "/nccl-tests")
+    parser.add_argument('-a', '--ncclTestArgs', type=str, help='nccl test arguments (see --help on the nccl test)', default="-b 1KB -e 32MB -f 2 -g 1 -c 1 -w 100 -n 100")
+    parser.add_argument('-c', '--mpirunCmdLine', type=str, help='''
+        mpirun: mpirun command line with any arguments necessary for the test runs.
+            * This should not include the paths to the nccl-tests or the MSCCL files as
+              these will be appended to the final command line automatically by the script.
+            * This should not include the -np argument as this will be automatically
+              obtained from the msccl xml file.''',
+        default = defaultMpirunCmdLine)
 
     # Parse the command line arguments
     args = parser.parse_args()
 
-    # Make sure sufficient command line arguments are provided
-    # and make sure the mode is either "test" or "run"
-    # if len(sys.argv) != 5 or (sys.argv[1] != "test" and sys.argv[1] != "run") :
-    #    print("Please provide line arguments: mode (test | run), directory, filter, outputDirectory")
-    #    return
+    # Make --help show the default values
+    parser.set_defaults(**vars(args))
 
-    mode = args.mode
+    # Assign the command line arguments to variables
+    mode = args.runMode
     directory = args.directory
     filter = args.filter
     outputDirectory = args.outputDirectory
-    endBufSize = args.endBufSize
+    msccl = args.msccl
+    mscclTools = args.mscclTools
+    ncclTests = args.ncclTests
+    mpirunCmdLine = args.mpirunCmdLine
 
     # Print all of the command line arguments
     print(f"Arguments: {args}")
@@ -103,7 +124,9 @@ def main():
                 # Parse the XML file to get the algorithm attributes for the benchmark. Input is the contents of the file.
                 algorithmAttributes = parse_msccl_xml(open(os.path.join(directory, filename), "r").read())
 
-            outputFileList = run_benchmark(mode, algorithmAttributes, filename, endBufSize, directory, outputDirectory)
+            outputFileList = run_benchmark(mode, algorithmAttributes, directory, filename, \
+                                            msccl, mscclTools, ncclTests, args.ncclTestArgs, mpirunCmdLine, \
+                                            algorithmAttributes.get("ngpus"), outputDirectory)
 
             # For each file in outputFileList parse the file to find the results
             # And append them to the resultFile in CSV format
@@ -141,9 +164,9 @@ def main():
         print(f"Processed Files = {prossessedFiles}")
 
 
-# Execute the test program on the file filename, place results in the output folder
+# Execute mprirun for the NCCL benchmark corresponding to the filename, place results in the output folder
 # then returns a list of the names of the output files
-def run_benchmark(mode, algorithmAttributes, filename, endBufSize, inputDirectory, outputDirectory) -> list:
+def run_benchmark(mode, algorithmAttributes, inputDirectory, filename, msccl, mscclTools, ncclTests, ncclTestArgs, mpirunCmdLine, nGPU, outputDirectory) -> list:
     print(f"\nRun Benchmark in mode {mode} for file: " + filename)
 
     # The list of output files that will be returned (one for NCCl and one for MSCCL)
@@ -178,32 +201,24 @@ def run_benchmark(mode, algorithmAttributes, filename, endBufSize, inputDirector
 
     ncclPerfTest = ncclAlgorithm + "_perf"
 
-    # Construct the command to run the benchmarks using the mpirun command
-    # example command:
-    #    mpirun --bind-to numa --tag-output --allow-run-as-root -np 8  -mca pml ob1 -mca btl ^openib -mca btl_tcp_if_include eth0 -x PATH -x LD_LIBRARY_PATH=~/msccl/build/lib/:$LD_LIBRARY_PATH -x UCX_IB_ENABLE_CUDA_AFFINITY=n -x NCCL_IB_PCI_RELAXED_ORDERING=1 -x UCX_IB_PCI_RELAXED_ORDERING=on -x UCX_NET_DEVICES=mlx5_0:1 -x UCX_TLS=rc -x NCCL_SOCKET_IFNAME=eth0 -x NCCL_DEBUG=INFO -x NCCL_NET_GDR_LEVEL=5 -x NCCL_DEBUG_SUBSYS=INIT,ENV -x NCCL_ALGO=MSCCL,RING,TREE -x CUDA_VISIBLE_DEVICES=0,1,2,3,4,5,6,7 -x MSCCL_XML_FILES=/home/saemal/test.xml ~/nccl-tests/build/all_reduce_perf -b 1KB -e 32MB -f 2 -g 1 -c 1 -w 100 -n 100
+    # General environment variables that are set for the command
+    # TODO: consider how to make CUDA_VISIBLE_DEVICES dynamic
     #
-    # below are important components of the command
-    #
-    commandPrefix = "mpirun --bind-to numa --tag-output --allow-run-as-root"
-    numProcs = " -np 16"  # for the -np parameter
-    mcaParams = " -hostfile /job/hostfile -mca pml ob1 -mca btl ^openib -mca btl_tcp_if_include eth0"
+    envVars = f" -x PATH -x LD_LIBRARY_PATH={msccl}/build/lib/:$LD_LIBRARY_PATH" + \
+        " -x UCX_IB_ENABLE_CUDA_AFFINITY=n -x NCCL_IB_PCI_RELAXED_ORDERING=1" + \
+        " -x UCX_IB_PCI_RELAXED_ORDERING=on -x UCX_NET_DEVICES=mlx5_0:1 -x UCX_TLS=rc" + \
+        " -x NCCL_SOCKET_IFNAME=eth0 -x NCCL_DEBUG=INFO -x NCCL_NET_GDR_LEVEL=5" + \
+        " -x NCCL_DEBUG_SUBSYS=INIT,ENV -x NCCL_ALGO=MSCCL,RING,TREE -x CUDA_VISIBLE_DEVICES=0,1,2,3,4,5,6,7"
+    ncclParameters = f" {mscclTools}/msccl/autosynth/msccl_ndv2_launcher.sh {ncclTests}/build/" + ncclPerfTest + " " + ncclTestArgs
+    npParameter = f" -np {nGPU}"
 
-    # The environment variables that are set for the command
-    # TODO: Consider separating these out variables that are non-constant. Originally the path prefix
-    #    was ~/ but seemed to have problems, so I changed it to the full path.
-    envVars = " -x PATH -x LD_LIBRARY_PATH=/home/saemal/msccl/build/lib/:$LD_LIBRARY_PATH -x UCX_IB_ENABLE_CUDA_AFFINITY=n -x NCCL_IB_PCI_RELAXED_ORDERING=1 -x UCX_IB_PCI_RELAXED_ORDERING=on -x UCX_NET_DEVICES=mlx5_0:1 -x UCX_TLS=rc -x NCCL_SOCKET_IFNAME=eth0 -x NCCL_DEBUG=INFO -x NCCL_NET_GDR_LEVEL=5 -x NCCL_DEBUG_SUBSYS=INIT,ENV -x NCCL_ALGO=MSCCL,RING,TREE -x CUDA_VISIBLE_DEVICES=0,1,2,3,4,5,6,7"
-
-    mscclEnvVars = " -x MSCCL_XML_FILES=" + os.path.join(inputDirectory, filename)
-    ncclBufferRange = f" -b 1KB -e {endBufSize}"
-    ncclParameters = " /home/saemal/msccl-tools/msccl/autosynth/msccl_ndv2_launcher.sh /home/saemal/nccl-tests/build/" + ncclPerfTest + ncclBufferRange + " -f 2 -g 1 -c 1 -w 100 -n 100"
-
-    # Run the NCCL version of the benchmark (without MSCCL) and direct the output to a new file called filename_nccl_result
+    # Direct the output to a new file called filename_nccl_result
     # Delete output file if it already exists
     ncclOutputFile = os.path.join(outputDirectory, f"{filename}_nccl_result.txt")
     if os.path.exists(ncclOutputFile):
         os.remove(ncclOutputFile)
 
-    ncclCommandLine = commandPrefix + numProcs + mcaParams + envVars + ncclParameters + " > " + ncclOutputFile
+    ncclCommandLine = mpirunCmdLine + npParameter + envVars + ncclParameters + " > " + ncclOutputFile
     print(f"Running NCCL-only test: {ncclCommandLine}")
     if mode == "test":
         writeToNcclFile = open(ncclOutputFile, "a")
@@ -215,8 +230,9 @@ def run_benchmark(mode, algorithmAttributes, filename, endBufSize, inputDirector
 
     # Run the MSCCL version of the benchmark and direct the output to a new file called filename_msccl_result
     # Delete the output file if it already exists
+    mscclEnvVars = " -x MSCCL_XML_FILES=" + os.path.join(inputDirectory, filename)
     mscclOutputFile = os.path.join(outputDirectory, f"{filename}_msccl_result.txt")
-    mscclCommandLine = commandPrefix + numProcs + mcaParams + envVars + mscclEnvVars + ncclParameters + " > " + mscclOutputFile
+    mscclCommandLine = mpirunCmdLine + npParameter + envVars + mscclEnvVars + ncclParameters + " > " + mscclOutputFile
     print(f"\nRunning MSCCL test: {mscclCommandLine}")
     if os.path.exists(mscclOutputFile):
         os.remove(mscclOutputFile)
@@ -235,7 +251,10 @@ def run_benchmark(mode, algorithmAttributes, filename, endBufSize, inputDirector
     for resultFile in [ncclOutputFile, mscclOutputFile]:
         with open(resultFile) as f:
             contents = f.read()
-            if "WARN" in contents.upper() or "ERROR" in contents.upper():
+
+            # If the output file contains NCCL warnings or errors the benchmark failed.
+            # Don't look for just WARN or ERROR because the output file may contain other innoccuous warnings.
+            if "NCCL WARN" in contents.upper() or "NCCL ERROR" in contents.upper():
                 print(f"The benchmark failed. The output file {resultFile} contains WARN or ERROR.")
             else:
                 if resultFile == mscclOutputFile and "Parsed MSCCL" not in contents:

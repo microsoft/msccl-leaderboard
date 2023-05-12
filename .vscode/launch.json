@@ -11,7 +11,7 @@
             "program": "${file}",
             "console": "integratedTerminal",
             "justMyCode": true,
-            "args": ["--mode", "test", "--directory", "c:\\temp\\test", "--filter", "*n16*", "-o", "C:\\temp\\test\\output"]
+            "args": ["--runMode", "test", "--directory", "c:\\temp\\test", "--filter", "*n16*", "-o", "C:\\temp\\test\\output"]
         }
     ]
 }
