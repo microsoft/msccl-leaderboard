@@ -18,19 +18,20 @@ import xml.etree.ElementTree as ET
 # 5. Use MSCCL tools to generate the MSCCL xml files
 #    or use pre-generated xml files from https://github.com/parasailteam/sccl-presynth/tree/main/sccl_presynth
 #
-# Usage: this program takes the following arguments: --mode, --directory, --filter, --outputDirectory, --endBufSize
-# See the main function for more details about the arguments.
+# Usage: bench.py <bench.py arguments> <mpirun command> <mpirun arguments> 
+#                 <optional launcher.sh> <path to nccl-tests/build> <nccl-tests arguments>
+# 
+# See the argparse.epilog in main()) for more details about the arguments.
 # Example command line: python bench.py --mode run --directory sccl-presynth/sccl_presynth --filter *gather.n16* --output output
 #
+# Example usage:
+# python bench.py --runMode run --directory ~/sccl-presynth/sccl_presynth --filter *gather.n16* -o ~/mikezw/output mpirun --bind-to numa --tag-output --allow-run-as-root -hostfile /job/hostfile -mca pml ob1 -mca btl ^openib -mca btl_tcp_if_include eth0 -x PATH -x LD_LIBRARY_PATH=~/msccl/build/lib/:$LD_LIBRARY_PATH -x UCX_IB_ENABLE_CUDA_AFFINITY=n -x NCCL_IB_PCI_RELAXED_ORDERING=1 -x UCX_IB_PCI_RELAXED_ORDERING=on -x UCX_NET_DEVICES=mlx5_0:1 -x UCX_TLS=rc -x NCCL_SOCKET_IFNAME=eth0 -x NCCL_DEBUG=INFO -x NCCL_NET_GDR_LEVEL=5 -x NCCL_DEBUG_SUBSYS=INIT,ENV -x NCCL_ALGO=MSCCL,RING,TREE -x CUDA_VISIBLE_DEVICES=0,1,2,3,4,5,6,7 ~/msccl-tools/msccl/autosynth/msccl_ndv2_launcher.sh ~/nccl-tests/build -b 1KB -e 1MB -f 2 -g 1 -c 1 -w 100 -n 100
+
 # Details on "--mode test":
 # The "--mode test" option is used to test the program without actually running the benchmarks.
 # It will still iterate overall of the files in the directory and filter but it will not run the benchmarks.
 # The file contents do not matter as the variable exampleMCCLInput is used instead of the file contents.
 # The output is also faked with the results being the variable exampleOutput.
-#
-# Example usage:
-# python bench.py --runMode run --directory sccl-presynth/sccl_presynth --filter *gather.n16* -o output mpirun --bind-to numa --tag-output --allow-run-as-root -hostfile /job/hostfile -mca pml ob1 -mca btl ^openib -mca btl_tcp_if_include eth0 -x PATH -x LD_LIBRARY_PATH=/home/saemal/msccl/build/lib/:$LD_LIBRARY_PATH -x UCX_IB_ENABLE_CUDA_AFFINITY=n -x NCCL_IB_PCI_RELAXED_ORDERING=1 -x UCX_IB_PCI_RELAXED_ORDERING=on -x UCX_NET_DEVICES=mlx5_0:1 -x UCX_TLS=rc -x NCCL_SOCKET_IFNAME=eth0 -x NCCL_DEBUG=INFO -x NCCL_NET_GDR_LEVEL=5 -x NCCL_DEBUG_SUBSYS=INIT,ENV -x NCCL_ALGO=MSCCL,RING,TREE -x CUDA_VISIBLE_DEVICES=0,1,2,3,4,5,6,7 /home/saemal/msccl-tools/msccl/autosynth/msccl_ndv2_launcher.sh /home/saemal/nccl-tests/build -b 1KB -e 1MB -f 2 -g 1 -c 1 -w 100 -n 100 
-# python mikezw/bench.py --runMode run --directory sccl-presynth/sccl_presynth --filter *gather.n16* -o output mpirun --bind-to numa --tag-output --allow-run-as-root -mca pml ob1 -mca btl ^openib -mca btl_tcp_if_include eth0 -x PATH -x LD_LIBRARY_PATH=/home/saemal/msccl/build/lib/:$LD_LIBRARY_PATH -x UCX_IB_ENABLE_CUDA_AFFINITY=n -x NCCL_IB_PCI_RELAXED_ORDERING=1 -x UCX_IB_PCI_RELAXED_ORDERING=on -x UCX_NET_DEVICES=mlx5_0:1 -x UCX_TLS=rc -x NCCL_SOCKET_IFNAME=eth0 -x NCCL_DEBUG=INFO -x NCCL_NET_GDR_LEVEL=5 -x NCCL_DEBUG_SUBSYS=INIT,ENV -x NCCL_ALGO=MSCCL,RING,TREE -x CUDA_VISIBLE_DEVICES=0,1,2,3,4,5,6,7 /home/saemal/msccl-tools/msccl/autosynth/msccl_ndv2_launcher.sh /home/saemal/nccl-tests/build -b 1KB -e 1MB -f 2 -g 1 -c 1 -w 100 -n 100 
 #
 # TODO comments are scattered throughout the code to indicate areas that need improvement.
 #   Primarily these are hard-coded constants that should probably be command line arguments.
@@ -46,15 +47,12 @@ def main():
     home_dir = os.path.expanduser("~")
 
     # Iterage over the command line arguments until we find the mpirun command.
-    # Save the arguments before the mpirun command and the arguments after the mpirun command.
-    # The arguments before the mpirun command are expected to be the arguments to this script.
+    # Save the arguments before the mpirun command as the arguments for this script.
     # The arguments after the mpirun command are expected to be the arguments to mpirun and the nccl-tests.
     #
     # Note: and alternative to this iteration would be the use argparse.parse_known_args(), however
     # it will misinterpret arguments that have a common prefix with expected arguments. For example
-    # -hostfile used for mpirun and with match the -h for --help. Also, on Linux the 
-    # shell processing of argumetents is different than windows and that caused other complications with using
-    # parse_known_args().
+    # -hostfile used for mpirun and with match the -h for --help. The approach here avoids this issue.
     #
     mpirun_index = None
     for i, arg in enumerate(sys.argv):
@@ -62,38 +60,50 @@ def main():
             mpirun_index = i
             break
 
-    if mpirun_index is None:
-        print("Error: mpirun command not found in arguments.")
-        sys.exit(1)
-
     # Save the arguments before the mpirun command
     script_args = sys.argv[1:mpirun_index]
 
-    # Save the arguments after the mpirun command
-    remainder_args = sys.argv[mpirun_index:]
-    
+    # Use RawDescriptionHelpFormatter to allow newlines in the description
+    class Formatter(argparse.ArgumentDefaultsHelpFormatter, argparse.RawDescriptionHelpFormatter):
+        pass
+
     # Setup an argument parser to parse the command line arguments for the script
     parser = argparse.ArgumentParser(\
         description='Run NCCL benchmarks tests using NCCL and MSCCL', 
-        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-        epilog='''After the optional arguments above the next argument is expected to\
- be the mpirun command (a path whose suffix is mprirun) followed by the arguments to the mpirun command.\
-\nNote that the -np parameter does not need to be specified as it will be added\
+        formatter_class=Formatter,
+        epilog='''After the script arguments above the next argument must be the mpirun command
+(or a path whose suffix is mprirun) followed by the arguments to the mpirun command.\
+\nNote that the mpirun -np parameter does not need to be specified as it will be added\
  to the mpirun command based on the MSCC xml file. If -np is provided it will be\
  checked against the expected value from the MSCCL xml file and an error will result\
  if they do not match.\
-\nAfter the mpirun command and arguments the next argument is expected to be the\
-          path to the ncc-tests directory followed by the arguments to the nccl-tests. \
-          This script will append the nccl test name that corresponds to the MSCCL xml file\
-          to the end of the nccl-tests directory path.\
+\n \nNext the path to an optional launcher.sh script can be provided
+     (for example msccl-tools/msccl/autosynth/msccl_ndv2_launcher.sh)\
+\n \nNext the path to the nccl-tests/build directory must be provided (for example ~/nccl-tests/build)\
+\n     This script will automatically append the nccl test name that corresponds to the MSCCL xml file\
+\n     to the end of the nccl-tests directory path.
+\nFinally the arguments to the nccl-tests must be provided.
+
           \nExample:\n\
-          python bench.py --runMode run --directory sccl-presynth/sccl_presynth --filter *gather.n16* --output output /usr/bin/mpirun --allow-run-as-root --tag-output --mca pml ob1 --mca btl ^openib --mca btl_tcp_if_include eth0 /home/username/nccl-tests/all_reduce_perf -b 8 -e 128M -f 2 -g 1 -c 1 -n 16 -w 1000 -t 5''')
+          python bench.py --runMode run --directory ~/sccl-presynth/sccl_presynth --filter *gather.n16* -o ~/mikezw/output mpirun --bind-to numa --tag-output --allow-run-as-root -hostfile /job/hostfile -mca pml ob1 -mca btl ^openib -mca btl_tcp_if_include eth0 -x PATH -x LD_LIBRARY_PATH=~/msccl/build/lib/:$LD_LIBRARY_PATH -x UCX_IB_ENABLE_CUDA_AFFINITY=n -x NCCL_IB_PCI_RELAXED_ORDERING=1 -x UCX_IB_PCI_RELAXED_ORDERING=on -x UCX_NET_DEVICES=mlx5_0:1 -x UCX_TLS=rc -x NCCL_SOCKET_IFNAME=eth0 -x NCCL_DEBUG=INFO -x NCCL_NET_GDR_LEVEL=5 -x NCCL_DEBUG_SUBSYS=INIT,ENV -x NCCL_ALGO=MSCCL,RING,TREE -x CUDA_VISIBLE_DEVICES=0,1,2,3,4,5,6,7 ~/msccl-tools/msccl/autosynth/msccl_ndv2_launcher.sh ~/nccl-tests/build -b 1KB -e 1MB -f 2 -g 1 -c 1 -w 100 -n 100''')
+    
+    # Add the script arguments
     parser.add_argument('-r', '--runMode', type=str, help='runMode: is either "test" or "run" where "test" indicates that the program should run in test mode and "run" indicates that the program should actually run the benchmarks.', default="run", choices=["test", "run"])
     parser.add_argument('-d', '--directory', type=str, help='directory: is the directory where the MSCCL xml files are located', default=home_dir + "/sccl-presynth/sccl_presynth")
     parser.add_argument('-f', '--filter', type=str, help='filter: is a filter in the style of https://docs.python.org/3/library/fnmatch.html for files in the directory that will be tested', required=True)
-    parser.add_argument('-o', '--outputDirectory', type=str, help='outputDirectory: is the directory where the output files will be placed', required=True)
+    parser.add_argument('-o', '--outputDirectory', type=str,\
+                         help='''outputDirectory: is the directory where the output files will be placed.
+                         Each mpirun execution will result in a separate output file named after the MSCCL xml file
+                         with a suffix of nccl_result.txt for a pure NCCL run and suffix msccl_result.txt for an MSCCL run.
+                         All test results will be parsed from these files and appended to OUTPUTDIRECTORY/result.txt with
+                         tab separated columns. ''', required=True)
 
-    # Parse the command line arguments from the Namespace within the returned tuple
+    # Append additional strings to the usage string to make it more clear
+    parser.usage = parser.format_usage() +\
+         " <mpirun command> <mpirun arguments> <optional launcher.sh> <path to nccl-tests/build> <nccl-tests arguments>" +\
+         "\nUse --help to see the full list of arguments."
+    
+        # Parse the command line arguments from the Namespace within the returned tuple
     args = parser.parse_args(script_args)
    
     # Make --help show the default values
@@ -105,7 +115,14 @@ def main():
     filter = args.filter
     outputDirectory = args.outputDirectory
 
+    # Save the arguments after the mpirun command
+    remainder_args = sys.argv[mpirun_index:]
+    
     print(f"script arguments: {args}    remainder_args: {remainder_args}")
+
+    if mpirun_index is None:
+        print("Error: mpirun command not found in arguments.")
+        sys.exit(1)
 
     # In run mode, verify that the first unknown argument is the mpirun command
     # and check that mpirun is in the OS path if it does not have a path separator.
@@ -221,30 +238,43 @@ def main():
 
             # For each file in outputFileList parse the file to find the results
             # And append them to the resultFile in CSV format
-            for outputFile in output_file_list:
+            for output_file_name in output_file_list:
                 # Extract the NCCL version from the output file based on a line like [1,0]<stdout>:NCCL version 2.12.12.MSCCL.0.7.3+cuda11.6
-                with open(outputFile, "r") as f:
+                with open(output_file_name, "r") as f:
                     for line in f:
                         if "NCCL version" in line:
                             nccl_version = line.split("NCCL version ")[1].strip()
                             break
 
                 # Parse the output file to get each line of performance results
-                data = parse_test_log(outputFile, separator)
-                for line in data:
-                    library = "MSCCL" if "msccl" in outputFile else "NCCL"
-                    # Write the results to the result file in CSV format.
-                    resultsF.write(algorithm_attributes.get("coll")
-                        + separator + filter
-                        + separator + time_of_test
-                        + separator + algorithm_attributes.get("ngpus")
-                        + separator + algorithm_attributes.get("proto")
-                        + separator + library
-                        + separator + nccl_version
-                        + separator + line # line is a string with Size, Time_OutOfPlace, Time_InPlace in CSV format.
-                        + separator + algorithm_attributes.get("name")
-                        + separator + filename
-                        + '\n')
+                lines = parse_test_log(output_file_name)
+                for line in lines:
+                    library = "MSCCL" if "msccl_result" in output_file_name else "NCCL"
+                    in_place_str = algorithm_attributes.get("inplace")
+                    assert in_place_str != None, f"Error: inplace attribute not found in XML file {filename}"
+                    in_place = int(in_place_str)
+
+                    # For each line in the output file write one output line for a MSCCL run corresponding
+                    # to in_place or out_of_place (since and MSCCL algorithm is only one or the other)
+                    # and and two lines for a NCCL run covering both in_place and out_of_place.
+                    for place in {0, 1}:
+                        if library == "MSCCL" and (place == 0 and in_place == 1) or (place == 1 and in_place == 0):
+                            continue
+                        
+                        # Write the results to the result file in CSV format.
+                        resultsF.write(algorithm_attributes.get("coll")
+                            + separator + filter
+                            + separator + time_of_test
+                            + separator + algorithm_attributes.get("ngpus")
+                            + separator + algorithm_attributes.get("proto")
+                            + separator + library
+                            + separator + nccl_version
+                            + separator + str(place) # in_place flag (0 or 1 for out-of-place or in-place)
+                            + separator + line[0] # buffer size
+                            + separator + (line[2] if place == 1 else line[1]) # if in_place is 1 then use line[2] otherwise use line[1]
+                            + separator + algorithm_attributes.get("name")
+                            + separator + filename
+                            + '\n')
 
     resultsF.close()
 
@@ -386,10 +416,9 @@ def parse_msccl_xml(xmlContent):
 
 # Parse the output file
 # For each matching line in the file return size and time for out-of-place and in-place
-# param path: path to the file
-# param separator: separator between columns for the output
+# param path: path to the file to parse
 # Code is based on based on https://github.com/microsoft/msccl-leaderboard/blob/main/generate_graphs.py#L48
-def parse_test_log(path, separator):
+def parse_test_log(path) -> list[tuple[int, float, float]]:
     # Example input
     # [1,0]<stdout>:#
     # [1,0]<stdout>:#                                                              out-of-place                       in-place
@@ -399,7 +428,7 @@ def parse_test_log(path, separator):
     # [1,0]<stdout>:        1024           256     float     sum      -1    75.18    0.01    0.03      0    78.30    0.01    0.02      0
     # [1,0]<stdout>:        2048           512     float     sum      -1    79.54    0.03    0.05      0    82.56    0.02    0.05      0
 
-    # output is an array of string
+    # output is an array of lists
     output = []
 
     # Create a pattern for lines that begin with '[1,0]<stdout>: ' and contain a number followed by a space and then a number
@@ -411,7 +440,7 @@ def parse_test_log(path, separator):
                 # split the line into an array of strings were each string is separated by one or more spaces
                 lineArray = line.split()
                 # Create a common separated string with the size, first time columns
-                output.append(f"{lineArray[1]}{separator}{lineArray[6]}{separator}{lineArray[10]}")
+                output.append([lineArray[1], lineArray[6], lineArray[10]])
 
     return output
 
@@ -458,9 +487,9 @@ def format_header_row(separator) -> str:
         + separator + 'Protocol'
         + separator + 'Library'
         + separator + 'NcclVersion'
+        + separator + 'InPlace'
         + separator + 'Size'
-        + separator + 'Time_OutOfPlace'
-        + separator + 'Time_InPlace'
+        + separator + 'Time'
         + separator + 'MSCCL_Algo_Name'
         + separator + 'MSCCL_File'
         + '\n')
@@ -531,8 +560,6 @@ exampleOutput = '''
 [1,0]<stdout>:   134217728      33554432     float     sum      -1    51259    2.62    4.91      0    51135    2.62    4.92      0
 [1,0]<stdout>:   268435456      67108864     float     sum      -1   101295    2.65    4.97      0   101395    2.65    4.96      0
 '''
-
-
 
 # Run the program
 if __name__ == "__main__":
