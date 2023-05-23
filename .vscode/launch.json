@@ -11,7 +11,8 @@
             "program": "${file}",
             "console": "integratedTerminal",
             "justMyCode": true,
-            "args": ["--mode", "test", "--directory", "c:\\temp\\test", "--filter", "*n16*", "-o", "C:\\temp\\test\\output"]
+            "args": ["--runMode", "test", "--directory", "c:\\temp\\test", "--filter", "*n16*", 
+                "-o", "C:\\temp\\test\\output", "mpirun", "--bind-to", "numa", "--tag-output", "--allow-run-as-root", "-hostfile", "/job/hostfile", "-mca", "pml", "ob1", "-mca", "btl", "^openib", "-mca", "btl_tcp_if_include", "eth0", "nccl-tests\\build", "ncclParam1"]
         }
     ]
 }
