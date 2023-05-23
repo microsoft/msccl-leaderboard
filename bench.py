@@ -22,11 +22,9 @@ import xml.etree.ElementTree as ET
 #                 <optional launcher.sh> <path to nccl-tests/build> <nccl-tests arguments>
 # 
 # See the argparse.epilog in main()) for more details about the arguments.
-# Example command line: python bench.py --mode run --directory sccl-presynth/sccl_presynth --filter *gather.n16* --output output
-#
 # Example usage:
 # python bench.py --runMode run --directory ~/sccl-presynth/sccl_presynth --filter *gather.n16* -o ~/mikezw/output mpirun --bind-to numa --tag-output --allow-run-as-root -hostfile /job/hostfile -mca pml ob1 -mca btl ^openib -mca btl_tcp_if_include eth0 -x PATH -x LD_LIBRARY_PATH=~/msccl/build/lib/:$LD_LIBRARY_PATH -x UCX_IB_ENABLE_CUDA_AFFINITY=n -x NCCL_IB_PCI_RELAXED_ORDERING=1 -x UCX_IB_PCI_RELAXED_ORDERING=on -x UCX_NET_DEVICES=mlx5_0:1 -x UCX_TLS=rc -x NCCL_SOCKET_IFNAME=eth0 -x NCCL_DEBUG=INFO -x NCCL_NET_GDR_LEVEL=5 -x NCCL_DEBUG_SUBSYS=INIT,ENV -x NCCL_ALGO=MSCCL,RING,TREE -x CUDA_VISIBLE_DEVICES=0,1,2,3,4,5,6,7 ~/msccl-tools/msccl/autosynth/msccl_ndv2_launcher.sh ~/nccl-tests/build -b 1KB -e 1MB -f 2 -g 1 -c 1 -w 100 -n 100
-
+#
 # Details on "--mode test":
 # The "--mode test" option is used to test the program without actually running the benchmarks.
 # It will still iterate overall of the files in the directory and filter but it will not run the benchmarks.
@@ -108,7 +106,8 @@ def main():
     # Determine if script_args contains "-h" or "--help" and if so remember that in help_found
     help_found = any(arg in ("-h", "--help") for arg in script_args)
 
-    # If the mpirun command is not found in the arguments and help isn't requested, print brief error and exit
+    # If the mpirun command is not found in the arguments and help isn't requested, print brief error and exit.
+    # If help is requested we let the parser print the help so we don't print an error about mpriun not being found.
     if mpirun_index is None and not help_found:
         print("Error: mpirun command not found in arguments.", file=sys.stderr)
         print(parser.format_usage(), file=sys.stderr)

@@ -4,13 +4,6 @@ from bench import main
 
 class TestBench(unittest.TestCase):
 
-    def test_upper(self):
-        self.assertEqual('foo'.upper(), 'FOO')
-
-    def test_isupper(self):
-        self.assertTrue('FOO'.isupper())
-        self.assertFalse('Foo'.isupper())
-
     def test_main(self):
         # Run the main function with some test arguments that should not fail
         result = subprocess.run(['python', 'bench.py', '--runMode', 'test', '--directory', '.',\
